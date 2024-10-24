@@ -1,0 +1,7 @@
+@if (_value) {
+    <div style="width: 50%; height: 20px; background-color: rgb(230, 217, 204)">
+        <div [style.width]="(_value | async)+'%'" 
+            style="background-color: coral; height: 20px;">
+        </div>
+    </div>
+}
