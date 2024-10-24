@@ -1,1 +1,45 @@
-/* You can add global styles to this file, and also import other style files */
+:root{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--font-color);
+    font-size: 18px;
+}
+
+body {
+    height: 100%;
+    background-color: var(--bg-color-dark);
+}
+
+a, a:visited {
+    color: var(--font-color);
+    text-decoration: none;
+}
+
+h1 {
+    font-size: 28px;
+    margin-bottom: 12px;
+}
+h2 {
+    font-size: 22px;
+    margin-bottom: 8px;
+}
+h3 {
+    font-size: 18px;
+    margin-bottom: 4px;
+}
+.flex {
+    display: flex;
+    &.row{
+        flex-direction: row;
+    }
+    &.column{
+        flex-direction: column;
+    }
+}
+.p-1 {
+    padding: 4px;
+}
+.p-2 {
+    padding: 8px;
+}
+
+

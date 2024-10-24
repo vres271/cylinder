@@ -1,0 +1,14 @@
+:root {
+    --bg-color: rgb(54, 59, 58);
+    --bg-color-dark: rgb(41, 46, 45);
+
+    --font-color: rgb(200,200,200);
+    --font-color-dark: rgb(41, 46, 45);
+    --border-color: rgb(137, 133, 133);
+
+    --btn-default-color: rgb(116, 117, 118);
+    --btn-success-color: rgb(103, 201, 38);
+    --btn-primary-color: rgb(42, 88, 187);
+    --btn-warning-color: rgb(217, 102, 20);
+    --btn-danger-color: rgb(192, 44, 27);
+}
