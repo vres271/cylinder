@@ -7,18 +7,23 @@ import { BehaviorSubject } from 'rxjs';
 export class DPKVMockService {
 
   public generate$ = new BehaviorSubject<number>(0);
-  private isActive = false;
+  isActive = false;
 
   constructor() { }
 
   start() {
+    if (this.isActive) return;
     this.isActive = true;
     this.next();
   }
   
+  stop() {
+    this.isActive = false;
+  }
+  
   next() {
     if (!this.isActive) return;
-    const dt = Math.round(1000 - 100 * Math.random());
+    const dt = Math.round(1000 - 500 * Math.random());
     this.generate$.next(dt);
     setTimeout(() => {
       this.next()

@@ -6,9 +6,9 @@
     --font-color-dark: rgb(41, 46, 45);
     --border-color: rgb(137, 133, 133);
 
-    --btn-default-color: rgb(116, 117, 118);
-    --btn-success-color: rgb(103, 201, 38);
-    --btn-primary-color: rgb(42, 88, 187);
-    --btn-warning-color: rgb(217, 102, 20);
-    --btn-danger-color: rgb(192, 44, 27);
+    --btn-default-color: rgb(92, 96, 98);
+    --btn-success-color: rgb(104 141 28);
+    --btn-primary-color: rgb(21 115 135);
+    --btn-warning-color: rgb(185 86 15);
+    --btn-danger-color: rgb(145 56 31);
 }

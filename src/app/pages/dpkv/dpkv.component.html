@@ -1,3 +1,35 @@
-<p>dpkv works!</p>
-<p>Signal: {{dpkvSignal | async}}</p>
-<app-plotter [value]="dpkvSignal"></app-plotter>
+<div class="mt-2 flex column  gap-2">
+    <h2>DPKV signal</h2>
+    <p>Signal: {{dpkvSignal | async}}</p>
+    <app-plotter [value]="dpkvSignal"></app-plotter>
+    <h2>Buttons example</h2>
+    <div class="flex row gap-2">
+        <ui-button 
+            role="primary" 
+            (click)="startSignal()" 
+            [disabled]="signalStarted"
+            label="Start"
+        />
+        <ui-button 
+            role="default" 
+            (click)="stopSignal()" 
+            [disabled]="!signalStarted"
+            label="Stop"
+        />
+    </div>
+    <div class="flex row gap-2">
+        <ui-button role="default">Default</ui-button>
+        <ui-button role="success">Success</ui-button>
+        <ui-button role="primary">Primary</ui-button>
+        <ui-button role="warning">Warning</ui-button>
+        <ui-button role="danger" label="Danger"></ui-button>
+    </div>
+    <div class="flex row gap-2">
+        <ui-button role="default" [disabled]="true" >Default</ui-button>
+        <ui-button role="success" [disabled]="true" >Success</ui-button>
+        <ui-button role="primary" [disabled]="true" >Primary</ui-button>
+        <ui-button role="warning" [disabled]="true" >Warning</ui-button>
+        <ui-button role="danger"  [disabled]="true" label="Danger"/>
+    </div>
+
+</div>

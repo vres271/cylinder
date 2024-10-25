@@ -1,0 +1,12 @@
+<button
+    (click)="onClick($event)"
+    [class]="role"
+    [disabled]="disabled"
+>
+    @if (label) {
+        {{label}}
+    } 
+    @else {
+        <ng-content></ng-content>
+    }
+</button>

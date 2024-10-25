@@ -34,6 +34,12 @@ h3 {
     &.column{
         flex-direction: column;
     }
+    &.gap-1{
+        gap: 4px;
+    }
+    &.gap-2{
+        gap: 8px;
+    }
 }
 .p-1 {
     padding: 4px;
@@ -41,5 +47,18 @@ h3 {
 .p-2 {
     padding: 8px;
 }
+.m-1 {
+    margin: 4px;
+}
+.m-2 {
+    margin: 8px;
+}
+.mt-1 {
+    margin-top: 4px;
+}
+.mt-2 {
+    margin-top: 8px;
+}
+
 
 
