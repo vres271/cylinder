@@ -1,14 +1,19 @@
-<header class="p-2">
-  <nav class="flex row">
-      @for (link of links; track $index) {
-          <a class="p-2"
-            routerLink="/{{link.path}}" 
-            routerLinkActive="active" 
-            ariaCurrentWhenActive="page"
-            >{{link.title}}</a>
-      }
-  </nav>
-</header>
-<main class="p-2">
-  <router-outlet></router-outlet>
-</main>
+<div class="grid" style="grid-template-rows: 50px auto 50px;">
+  <header class="p-2">
+    <nav class="flex row">
+        @for (link of links; track $index) {
+            <a class="p-2"
+              routerLink="/{{link.path}}" 
+              routerLinkActive="active" 
+              ariaCurrentWhenActive="page"
+              >{{link.title}}</a>
+        }
+    </nav>
+  </header>
+  <main class="p-2">
+    <router-outlet></router-outlet>
+  </main>
+  <footer class="p-2">
+    Status: OK
+  </footer>
+</div>

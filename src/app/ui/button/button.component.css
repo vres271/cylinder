@@ -1,12 +1,12 @@
 button {
     background-color: var(--btn-primary-color);
     color: var(--font-color);
-    padding: 12px 32px;
+    padding: var(--step-2) var(--step-4);
     outline: 0;
     border: 0;
-    border-radius: 8px;
+    border-radius: var(--step-2);
     cursor: pointer;
-    font-size: 14px;
+    font-size: var(--font-size-s);
     transition: all .1s ease-out;
     &:hover {
         filter: brightness(120%);

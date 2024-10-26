@@ -11,4 +11,16 @@
     --btn-primary-color: rgb(21 115 135);
     --btn-warning-color: rgb(185 86 15);
     --btn-danger-color: rgb(145 56 31);
+
+    --step-1: 4px;
+    --step-2: 8px;
+    --step-3: 16px;
+    --step-4: 32px;
+
+    --font-size-xs: 12px;
+    --font-size-s: 14px;
+    --font-size-md: 18px;
+    --font-size-l: 24px;
+    --font-size-xl: 28px;
+
 }
