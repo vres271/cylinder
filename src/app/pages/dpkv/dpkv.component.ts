@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { PlotterComponent } from '../../shared/components/plotter/plotter.component';
 import { DPKVMockService } from '../../mocks/services/engine/sensors/dpkv.service';
 import { Observable } from 'rxjs';
@@ -15,14 +15,15 @@ import { ButtonComponent } from '../../ui/button/button.component';
   ],
   providers: [DPKVMockService],
   templateUrl: './dpkv.component.html',
-  styleUrl: './dpkv.component.css'
+  styleUrl: './dpkv.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DPKVComponent {
 
   dpkvSignal!: Observable<number>;
 
   constructor(private dpkv: DPKVMockService) {
-    this.dpkvSignal = this.dpkv.generate$.asObservable();
+    this.dpkvSignal = this.dpkv.generate$;
     
   }
 
