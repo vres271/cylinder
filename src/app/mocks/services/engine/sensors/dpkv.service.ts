@@ -34,6 +34,8 @@ export class DPKVMockService {
   prevY = 0;
   prevdY = 0;
   counter = 0;
+  toothStart = 5; 
+  toothW = 1; 
 
   dpkv() {
     const t = new Date().valueOf();
@@ -42,13 +44,15 @@ export class DPKVMockService {
     let setupCounter = 0;
     const noise = 200 * Math.random() - 100;
     let A = 500;
-    if (this.counter > 20) {
+    let v = 0.04;
+    if (this.counter > this.toothStart) {
       A = 1000;
+      v = 0.01;
     }
-    if (this.counter > 22) {
+    if (this.counter > this.toothStart + this.toothW) {
       this.counter = 0;
     }
-    const y = 0.5 * A * Math.sin(0.04 * t) + 0.5 * A;
+    const y = (0.5 * A * Math.sin(v * t)) + 500;
     let dY = y - this.prevY;
     // if (setupCounter++ < 1000) {
     //   minY = minY === undefined || A <= minY ? y : minY;
