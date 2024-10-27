@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { AfterContentInit, Component, Input, OnInit } from '@angular/core';
+import { AfterContentInit, ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { map, Observable, tap } from 'rxjs';
 
 @Component({
@@ -7,7 +7,9 @@ import { map, Observable, tap } from 'rxjs';
   standalone: true,
   imports: [AsyncPipe],
   templateUrl: './plotter.component.html',
-  styleUrl: './plotter.component.css'
+  styleUrl: './plotter.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+
 })
 export class PlotterComponent implements OnInit, AfterContentInit{
 
@@ -50,10 +52,9 @@ export class PlotterComponent implements OnInit, AfterContentInit{
     let t = 0;
     let prevT = 0; 
     let prevV = 0; 
-    const step = 5;
+    const step = 1;
     const A = 1000;
     const kY = cH / A;
-    let counter = 0;
     this._value = this.value.pipe(
       tap(v => {
         if (this.ctx) {

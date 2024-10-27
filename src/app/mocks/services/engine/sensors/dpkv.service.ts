@@ -31,36 +31,36 @@ export class DPKVMockService {
     //this.meandr();
   }
 
+  prevY = 0;
+  prevdY = 0;
+  counter = 0;
+
   dpkv() {
     const t = new Date().valueOf();
-    let counter = 0;
     let minY: number | undefined = undefined;
     let maxY: number | undefined = undefined;
     let setupCounter = 0;
     const noise = 200 * Math.random() - 100;
-    let A = 1000;
-    if (counter > 20) {
-      A = 2000;
+    let A = 500;
+    if (this.counter > 20) {
+      A = 1000;
     }
-    if (counter > 23) {
-      counter = 0;
+    if (this.counter > 22) {
+      this.counter = 0;
     }
-    let prevY = 0;
-    let prevdY = 0;
-    const y = 0.5 * A * Math.sin(0.02 * t) + 0.5 * A;
-    let dY = y - prevY;
+    const y = 0.5 * A * Math.sin(0.04 * t) + 0.5 * A;
+    let dY = y - this.prevY;
     // if (setupCounter++ < 1000) {
     //   minY = minY === undefined || A <= minY ? y : minY;
     //   maxY = maxY === undefined || A >= maxY ? y : maxY;
     // } else {
-      console.log(y, prevY, dY)
-      if (dY > 0 && prevdY < 0) {
-        console.log(counter)
-        counter++;
+      if (dY > 0 && this.prevdY < 0) {
+        console.log(this.counter)
+        this.counter++;
       }
     // }
-    prevdY = dY;
-    prevY = y;
+    this.prevdY = dY;
+    this.prevY = y;
     this.generate$.next(y);
     setTimeout(() => {
       this.next()
