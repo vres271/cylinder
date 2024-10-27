@@ -1,8 +1,12 @@
 <div class="mt-2 flex column  gap-2">
     <h2>DPKV signal</h2>
     <p>Signal: {{dpkvSignal | async}}</p>
-    <app-plotter [value]="dpkvSignal"></app-plotter>
-    <h2>Buttons example</h2>
+    <app-plotter 
+        [value]="dpkvSignal" 
+        [scaleX]="xScale"
+        [scaleY]="yScale"
+        [frameW]="frameW"
+    ></app-plotter>
     <div class="flex row gap-2">
         <ui-button 
             role="primary" 
@@ -16,7 +20,33 @@
             [disabled]="!signalStarted"
             label="Stop"
         />
+        <ui-input 
+            [(value)]="xScale" 
+            type="number" 
+            placeholder="Scale X"
+            [min]="0.1"
+            [step]="0.1"
+            [max]="1000"
+        ></ui-input>
+        <ui-input 
+            [(value)]="yScale" 
+            type="number" 
+            placeholder="Scale Y"
+            [min]="0.1"
+            [step]="0.1"
+            [max]="1000"
+        ></ui-input>
+        <ui-input 
+            [(value)]="frameW" 
+            type="number" 
+            placeholder="Frame width (px)"
+            [min]="1"
+            [step]="1"
+            [max]="3000"
+        ></ui-input>
     </div>
+    <h2 class="mt-4">UI example</h2>
+    <h3>Buttons</h3>
     <div class="flex row gap-2">
         <ui-button role="default">Default</ui-button>
         <ui-button role="success">Success</ui-button>
@@ -30,6 +60,14 @@
         <ui-button role="primary" [disabled]="true" >Primary</ui-button>
         <ui-button role="warning" [disabled]="true" >Warning</ui-button>
         <ui-button role="danger"  [disabled]="true" label="Danger"/>
+    </div>
+    <h3>Inputs</h3>
+    <div class="flex row gap-2">
+        <ui-input [(value)]="test"></ui-input>
+        <ui-input [(value)]="test" placeholder="Input value"></ui-input>
+        <ui-input [(value)]="test" type="number"></ui-input>
+        <ui-input [(value)]="test" [disabled]="true"></ui-input>
+        <div>{{test}}</div>
     </div>
 
 </div>

@@ -47,6 +47,8 @@ h3 {
 .m-2 { margin: var(--step-2); }
 .mt-1 { margin-top: var(--step-1); }
 .mt-2 { margin-top: var(--step-2); }
+.mt-3 { margin-top: var(--step-3); }
+.mt-4 { margin-top: var(--step-4); }
 
 .scrollable {
     overflow-y: auto;

@@ -59,7 +59,7 @@ export class DPKVMockService {
     //   maxY = maxY === undefined || A >= maxY ? y : maxY;
     // } else {
       if (dY > 0 && this.prevdY < 0) {
-        console.log(this.counter)
+        // console.log(this.counter)
         this.counter++;
       }
     // }

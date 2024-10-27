@@ -4,6 +4,7 @@ import { DPKVMockService } from '../../mocks/services/engine/sensors/dpkv.servic
 import { Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { ButtonComponent } from '../../ui/button/button.component';
+import { InputComponent } from '../../ui/input/input.component';
 
 @Component({
   selector: 'app-dpkv',
@@ -11,7 +12,8 @@ import { ButtonComponent } from '../../ui/button/button.component';
   imports: [
     PlotterComponent,
     AsyncPipe,
-    ButtonComponent
+    ButtonComponent,
+    InputComponent,
   ],
   providers: [DPKVMockService],
   templateUrl: './dpkv.component.html',
@@ -21,6 +23,10 @@ import { ButtonComponent } from '../../ui/button/button.component';
 export class DPKVComponent {
 
   dpkvSignal!: Observable<number>;
+  test = 123;
+  xScale = 3;
+  yScale = 1;
+  frameW = 900;
 
   constructor(private dpkv: DPKVMockService) {
     this.dpkvSignal = this.dpkv.generate$;

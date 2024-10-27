@@ -20,6 +20,9 @@ export class PlotterComponent implements OnInit, AfterContentInit{
   _value!: Observable<number>
 
   @Input() value!: Observable<number>;
+  @Input() scaleX: number = 1;
+  @Input() scaleY: number = 1;
+  @Input() frameW: number = 900;
 
   constructor() {
   }
@@ -52,7 +55,6 @@ export class PlotterComponent implements OnInit, AfterContentInit{
     let t = 0;
     let prevT = 0; 
     let prevV = 0; 
-    const step = 1;
     const A = 1000;
     const kY = cH / A;
     this._value = this.value.pipe(
@@ -60,18 +62,18 @@ export class PlotterComponent implements OnInit, AfterContentInit{
         if (this.ctx) {
           const ctx = this.ctx;
           ctx.beginPath();
-          ctx.lineTo(prevT, cH - kY*prevV);
-          ctx.lineTo(t, cH - kY*v);
+          ctx.lineTo(prevT, cH - this.scaleY * kY * prevV);
+          ctx.lineTo(t, cH - this.scaleY * kY * v);
           ctx.closePath();
           ctx.stroke();
-          if (t >= cW) {
+          if (t >= this.frameW) {
             t = 0;
             ctx.fillRect(0,0,cW,cH);
           }
           prevT = t;
           prevV = v;
         }
-        t+=step;
+        t+=+this.scaleX;
       }),
       map(v => 0.1 * v),
     )

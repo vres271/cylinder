@@ -1,0 +1,24 @@
+input {
+    background-color: #ffffff0b;
+    color: var(--font-color);
+    padding: var(--step-2) var(--step-3);
+    border: 0;
+    outline: 1px solid var(--border-color);
+    outline-offset: -1px;
+    border-radius: var(--step-2);
+    font-size: var(--font-size-s);
+    transition: all .1s ease-out;
+    min-width: none;
+    &:hover {
+        filter: brightness(120%);
+    }
+    &:focus {
+        filter: brightness(120%);
+        background-color: #ffffff15;
+    }
+    &:disabled{
+        filter: brightness(100%);
+        opacity: .5;
+        cursor: not-allowed;
+    }
+}
