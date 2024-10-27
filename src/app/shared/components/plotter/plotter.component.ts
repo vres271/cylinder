@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterContentInit, Component, Input, OnInit } from '@angular/core';
 import { map, Observable, tap } from 'rxjs';
 
 @Component({
@@ -9,7 +9,11 @@ import { map, Observable, tap } from 'rxjs';
   templateUrl: './plotter.component.html',
   styleUrl: './plotter.component.css'
 })
-export class PlotterComponent implements OnInit{
+export class PlotterComponent implements OnInit, AfterContentInit{
+
+  height = 200;
+  width = 900;
+  private ctx!: CanvasRenderingContext2D | null;
 
   _value!: Observable<number>
 
@@ -18,31 +22,50 @@ export class PlotterComponent implements OnInit{
   constructor() {
   }
 
-  ngOnInit() {
+  initCanvas() {
     const canvas = document.getElementById("canvas") as HTMLCanvasElement;
-    const ctx = canvas.getContext("2d");
-    if (ctx) {
-      ctx.fillStyle = 'green';
-      ctx.strokeStyle = 'silver';
-      ctx.lineWidth = 0.5;
-      ctx.moveTo(0,250);
+    this.ctx = canvas.getContext("2d");
+    if (this.ctx) {
+      this.ctx.fillStyle = 'rgba(41, 46, 45, .9)';
+      this.ctx.strokeStyle = 'white';
+      this.ctx.lineWidth = 0.5;
+    }
+  }
+
+  ngAfterContentInit(): void {
+    setTimeout(() => {
+      this.initCanvas();
+    }, 100)
+  }
+
+
+  ngOnInit() {
+    const cH = this.height;
+    const cW = this.width;
+
+    if (this.ctx) {
+      this.ctx.moveTo(0,cH/2);
     }
   
     let t = 0;
     let prevT = 0; 
     let prevV = 0; 
     const step = 5;
+    const A = 1000;
+    const kY = cH / A;
+    let counter = 0;
     this._value = this.value.pipe(
       tap(v => {
-        if (ctx) {
+        if (this.ctx) {
+          const ctx = this.ctx;
           ctx.beginPath();
-          ctx.lineTo(prevT, 500 - 0.5*prevV);
-          ctx.lineTo(t, 500 - 0.5*v);
+          ctx.lineTo(prevT, cH - kY*prevV);
+          ctx.lineTo(t, cH - kY*v);
           ctx.closePath();
           ctx.stroke();
-          if (t >= 1200) {
+          if (t >= cW) {
             t = 0;
-            ctx.clearRect(0,0,1200,500);
+            ctx.fillRect(0,0,cW,cH);
           }
           prevT = t;
           prevV = v;
@@ -52,5 +75,6 @@ export class PlotterComponent implements OnInit{
       map(v => 0.1 * v),
     )
   }
+
 
 }
