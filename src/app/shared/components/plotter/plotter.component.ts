@@ -31,7 +31,7 @@ export class PlotterComponent implements OnInit, AfterContentInit{
     const canvas = document.getElementById("canvas") as HTMLCanvasElement;
     this.ctx = canvas.getContext("2d");
     if (this.ctx) {
-      this.ctx.fillStyle = 'rgba(41, 46, 45, .9)';
+      this.ctx.fillStyle = 'rgba(41, 46, 45, .8)';
       this.ctx.strokeStyle = 'white';
       this.ctx.lineWidth = 0.5;
     }

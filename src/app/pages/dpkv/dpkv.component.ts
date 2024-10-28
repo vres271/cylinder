@@ -24,9 +24,9 @@ export class DPKVComponent {
 
   dpkvSignal!: Observable<number>;
   test = 123;
-  xScale = 3;
+  xScale = 10;
   yScale = 1;
-  frameW = 900;
+  frameW = 998;
 
   constructor(private dpkv: DPKVMockService) {
     this.dpkvSignal = this.dpkv.generate$;

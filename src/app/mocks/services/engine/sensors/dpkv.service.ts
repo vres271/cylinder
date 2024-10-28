@@ -27,7 +27,8 @@ export class DPKVMockService {
   
   next() {
     if (!this.isActive) return;
-    this.dpkv();
+    this.dpkvArray();
+    //this.dpkv();
     //this.meandr();
   }
 
@@ -36,6 +37,23 @@ export class DPKVMockService {
   counter = 0;
   toothStart = 5; 
   toothW = 1; 
+
+  valuesData = [0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,-0.5,1.5];
+  i = 0;
+
+  dpkvArray() {
+    let A = 300;
+    // const t = new Date().valueOf();
+    let y = A * this.valuesData[this.i] + 300;
+    this.generate$.next(y);
+    this.i++;
+    if (this.i >= this.valuesData.length) {
+      this.i = 0;
+    }
+    setTimeout(() => {
+      this.next()
+    }, 1)    
+  }
 
   dpkv() {
     const t = new Date().valueOf();
