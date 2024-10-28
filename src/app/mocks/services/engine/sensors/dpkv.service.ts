@@ -40,14 +40,23 @@ export class DPKVMockService {
 
   valuesData = [0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,-0.5,1.5];
   i = 0;
+  frameW = 5;
+  acc = [1,1,1,1,1,1,1,1];
 
   dpkvArray() {
     let A = 300;
-    // const t = new Date().valueOf();
-    let y = A * this.valuesData[this.i] + 300;
+    const t = new Date().valueOf();
+    let y = A * this.valuesData[Math.floor(this.i)] + 300;
+    //let y = A * Math.sin(t * 0.01) + 300
+    //y = (y + this.prevY * (this.frameW - 1)) / this.frameW;
+    this.acc.push(y);
+    this.acc.shift();
+    y = this.acc.reduce((v, sum) => sum + v, 0 ) / this.acc.length; 
+    this.prevY = y;
+
     this.generate$.next(y);
-    this.i++;
-    if (this.i >= this.valuesData.length) {
+    this.i+=0.1;
+    if (Math.floor(this.i) >= this.valuesData.length) {
       this.i = 0;
     }
     setTimeout(() => {
