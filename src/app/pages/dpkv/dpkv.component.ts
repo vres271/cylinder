@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { PlotterComponent } from '../../shared/components/plotter/plotter.component';
+import { IPoint, PlotterComponent } from '../../shared/components/plotter/plotter.component';
 import { DPKVMockService } from '../../mocks/services/engine/sensors/dpkv.service';
 import { Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
@@ -22,7 +22,7 @@ import { InputComponent } from '../../ui/input/input.component';
 })
 export class DPKVComponent {
 
-  dpkvSignal!: Observable<number>;
+  dpkvSignal!: Observable<IPoint>;
   test = 123;
   xScale = 10;
   yScale = 1;

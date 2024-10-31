@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Subject } from 'rxjs';
+import { IPoint } from '../../../../shared/components/plotter/plotter.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DPKVMockService {
 
-  public generate$ = new BehaviorSubject<number>(0);
+  public generate$ = new Subject<IPoint>();
   isActive = false;
   private state = {
     level: false,
@@ -27,8 +28,8 @@ export class DPKVMockService {
   
   next() {
     if (!this.isActive) return;
-    this.dpkvArray();
-    //this.dpkv();
+    // this.dpkvArray();
+    this.dpkv();
     //this.meandr();
   }
 
@@ -42,6 +43,7 @@ export class DPKVMockService {
   i = 0;
   frameW = 5;
   acc = [1,1,1,1,1,1,1,1];
+  n = 0;
 
   dpkvArray() {
     let A = 300;
@@ -54,7 +56,7 @@ export class DPKVMockService {
     y = this.acc.reduce((v, sum) => sum + v, 0 ) / this.acc.length; 
     this.prevY = y;
 
-    this.generate$.next(y);
+    this.generate$.next({x: this.n++, y});
     this.i+=0.1;
     if (Math.floor(this.i) >= this.valuesData.length) {
       this.i = 0;
@@ -92,7 +94,7 @@ export class DPKVMockService {
     // }
     this.prevdY = dY;
     this.prevY = y;
-    this.generate$.next(y);
+    this.generate$.next({x: this.n++, y});
     setTimeout(() => {
       this.next()
     }, 10)
@@ -106,7 +108,7 @@ export class DPKVMockService {
       this.state.level = !this.state.level;
     }
     const dt = Math.round((this.state.level ? 800 : 300) - 200 * Math.random());
-    this.generate$.next(dt);
+    this.generate$.next({x: this.n++, y: dt});
     setTimeout(() => {
       this.next()
     }, dt / 100)

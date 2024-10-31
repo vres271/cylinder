@@ -1,6 +1,6 @@
 <div class="mt-2 flex column  gap-2">
     <h2>DPKV signal</h2>
-    <p>Signal: {{dpkvSignal | async}}</p>
+    <p>Signal: {{(dpkvSignal | async)?.y}}</p>
     <app-plotter 
         [value]="dpkvSignal" 
         [scaleX]="xScale"
