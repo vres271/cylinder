@@ -10,13 +10,13 @@
     <div class="flex row gap-2">
         <ui-button 
             role="primary" 
-            (click)="startSignal()" 
+            (onClick)="startSignal()" 
             [disabled]="signalStarted"
             label="Start"
         />
         <ui-button 
             role="default" 
-            (click)="stopSignal()" 
+            (onClick)="stopSignal()" 
             [disabled]="!signalStarted"
             label="Stop"
         />

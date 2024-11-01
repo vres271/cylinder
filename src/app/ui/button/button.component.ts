@@ -15,10 +15,10 @@ export class ButtonComponent {
   @Input() disabled?: boolean;
   @Input() role: UIRole = 'default';
 
-  @Output() click = new EventEmitter<UIEvent<undefined, MouseEvent>>;
+  @Output() onClick = new EventEmitter<UIEvent<undefined, MouseEvent>>;
 
-  onClick(originalEvent: MouseEvent) {
-    this.click.emit({
+  clickHandler(originalEvent: MouseEvent) {
+    this.onClick.emit({
       originalEvent
     })
   }

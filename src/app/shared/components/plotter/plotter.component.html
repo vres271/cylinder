@@ -5,6 +5,18 @@
         </div>
     </div>
 }
+<div class="flex row gap-2 mt-2">
+    <ui-button 
+        role="default" 
+        (onClick)="drawFromBuffer()" 
+        label="Draw from buffer ({{buffer.length}})"
+    />
+    <ui-button 
+        role="warning" 
+        (onClick)="clearAll()" 
+        label="Clear"
+    />
+</div>
 <div class="container mt-2">
     <canvas id="canvas" [height]="height" [width]="width"></canvas>
 </div>

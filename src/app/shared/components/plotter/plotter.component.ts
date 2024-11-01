@@ -1,6 +1,7 @@
 import { AsyncPipe } from '@angular/common';
 import { AfterContentInit, ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { map, Observable, tap } from 'rxjs';
+import { ButtonComponent } from '../../../ui/button/button.component';
 
 export interface IPoint {
   x: number;
@@ -19,7 +20,7 @@ export interface IVector {
 @Component({
   selector: 'app-plotter',
   standalone: true,
-  imports: [AsyncPipe],
+  imports: [AsyncPipe, ButtonComponent],
   templateUrl: './plotter.component.html',
   styleUrl: './plotter.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -30,8 +31,8 @@ export class PlotterComponent implements OnInit, AfterContentInit{
 
   height = 200;
   width = 900;
-  bufferSize = 100;
-  buffer: IPoint[] = [];
+  bufferSize = 10000;
+  buffer: IPlotPoint[] = [];
 
   private ctx!: CanvasRenderingContext2D | null;
 
@@ -61,23 +62,17 @@ export class PlotterComponent implements OnInit, AfterContentInit{
     }, 100)
   }
 
-  point0: IPlotPoint = {
-    x: 0,
-    y: 0,
-    t: 0,
-  };
+  point0: IPlotPoint = {x: 0, y: 0, t: 0}
   A = 1000;
   kY = this.height / this.A;
   shiftX = 0;
+  i = 0;
 
   ngOnInit() {
-    this.kY = this.height / this.A;
-
-    if (this.ctx) {
-      this.ctx.moveTo(0, this.height/2);
-    }
+    this.resetVars();
     this._value = this.value.pipe(
       tap(v => {
+        if (!this.ctx) return;
         const t = new Date().valueOf();
         const point: IPlotPoint = {
           t,
@@ -85,15 +80,47 @@ export class PlotterComponent implements OnInit, AfterContentInit{
           y: v.y,
         }
         this.writeToBuffer(point);
-        const screenVector = this.drawVector(this.point0, point);
-        if (screenVector.end.x >= this.frameW) {
-          this.shiftX -= screenVector.end.x;
-          this.clearRect();
-        }
-        this.point0 = {...point};
+        this.draw(point);
       }),
       map(point => 0.1 * point.y),
     )
+  }
+
+  drawFromBuffer() {
+    this.resetVars();
+    this.buffer.forEach(point => this.draw(point))
+  }
+
+  draw(point: IPlotPoint) {
+    this.moveToPoint(point);
+    const screenVector = this.drawVector(this.point0, point);
+    if (screenVector.end.x >= this.frameW) {
+      this.shiftX -= screenVector.end.x;
+      this.clearRect();
+    }
+    this.point0 = {...point};
+    this.i++;
+  }
+
+  resetVars() {
+    this.point0 = {x: 0, y: 0, t: 0};
+    this.i = 0;
+    this.shiftX = 0;
+    this.kY = this.height / this.A;
+    this.clearAll();
+  }
+
+  moveToPoint(point: IPlotPoint) {
+    if (!this.ctx) return;
+    if (!this.i) {
+      const firstVector = this.toScreenVector(point, point);
+      this.ctx.moveTo(firstVector.start.x, firstVector.end.y);
+    }
+  }
+
+  clearAll() {
+    if (!this.ctx) return;
+    this.ctx.clearRect(0, 0, this.width, this.height);
   }
 
   writeToBuffer(point: IPlotPoint) {
@@ -113,7 +140,13 @@ export class PlotterComponent implements OnInit, AfterContentInit{
   }
 
   drawVector(start: IPlotPoint, end: IPlotPoint) {
-    const screenVector = {
+    const screenVector = this.toScreenVector(start, end)
+    this.drawScreenSegment(screenVector);
+    return screenVector;
+  }
+
+  toScreenVector(start: IPlotPoint, end: IPlotPoint) {
+    return {
       start: {
         x: this.scaleX * start.x + this.shiftX, 
         y: this.height - this.scaleY * this.kY * start.y
@@ -123,8 +156,6 @@ export class PlotterComponent implements OnInit, AfterContentInit{
         y: this.height - this.scaleY * this.kY * end.y
       },
     }
-    this.drawScreenSegment(screenVector);
-    return screenVector;
   }
 
   clearRect() {
