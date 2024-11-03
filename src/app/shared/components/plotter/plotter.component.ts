@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { AfterContentInit, ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { AfterContentInit, AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { map, Observable, tap } from 'rxjs';
 import { ButtonComponent } from '../../../ui/button/button.component';
 
@@ -27,14 +27,20 @@ export interface IVector {
 
 })  
 
-export class PlotterComponent implements OnInit, AfterContentInit{
+export class PlotterComponent implements OnInit, OnDestroy, AfterViewInit{
 
   height = 200;
   width = 900;
   bufferSize = 10000;
   buffer: IPlotPoint[] = [];
 
-  private ctx!: CanvasRenderingContext2D | null;
+  point0: IPlotPoint = {x: 0, y: 0, t: 0}
+  A = 1000;
+  kY = this.height / this.A;
+  shiftX = 0;
+  i = 0;
+
+  private ctx: CanvasRenderingContext2D | null = null;
 
   _value!: Observable<number>
 
@@ -43,36 +49,53 @@ export class PlotterComponent implements OnInit, AfterContentInit{
   @Input() scaleY: number = 1;
   @Input() frameW: number = 900;
 
-  constructor() {
-  }
+  @ViewChild('canvasContainer', {read: ElementRef}) canvasContainerElem!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('canvas', {read: ElementRef}) canvasElem!: ElementRef<HTMLCanvasElement>;
 
-  initCanvas() {
-    const canvas = document.getElementById("canvas") as HTMLCanvasElement;
-    this.ctx = canvas.getContext("2d");
+  private resizeObserver: ResizeObserver | null = null;
+
+  constructor(private cd: ChangeDetectorRef) { }
+
+  initCanvas(container: HTMLCanvasElement) {
+
+    this.width = container.offsetWidth;
+    this.height = container.offsetHeight;
+    this.frameW = this.width;
+    this.kY = this.height / this.A;
+    this.cd.detectChanges();
+
+    this.ctx = this.canvasElem.nativeElement.getContext("2d");
     if (this.ctx) {
       this.ctx.fillStyle = 'rgba(41, 46, 45, .8)';
       this.ctx.strokeStyle = 'rgba(255, 255, 255, .5)';
       this.ctx.lineWidth = 1;
     }
+  
   }
 
-  ngAfterContentInit(): void {
-    setTimeout(() => {
-      this.initCanvas();
-    }, 100)
-  }
+  ngAfterViewInit() {
+  
+    const container = this.canvasContainerElem.nativeElement;
 
-  point0: IPlotPoint = {x: 0, y: 0, t: 0}
-  A = 1000;
-  kY = this.height / this.A;
-  shiftX = 0;
-  i = 0;
+    let lastResizeTime = 0;
+    new ResizeObserver((a, observer) => {
+      this.resizeObserver = observer;
+      const t = new Date().valueOf();
+      if (t - lastResizeTime > 10) {
+        this.initCanvas(container);
+        this.drawFromBuffer();
+        lastResizeTime = t;
+      }
+    }).observe(container);
+
+    this.initCanvas(container);
+
+  }
 
   ngOnInit() {
     this.resetVars();
     this._value = this.value.pipe(
       tap(v => {
-        if (!this.ctx) return;
         const t = new Date().valueOf();
         const point: IPlotPoint = {
           t,
@@ -84,6 +107,10 @@ export class PlotterComponent implements OnInit, AfterContentInit{
       }),
       map(point => 0.1 * point.y),
     )
+  }
+
+  ngOnDestroy(): void {
+    this.resizeObserver?.disconnect();
   }
 
   drawFromBuffer() {
@@ -111,16 +138,14 @@ export class PlotterComponent implements OnInit, AfterContentInit{
   }
 
   moveToPoint(point: IPlotPoint) {
-    if (!this.ctx) return;
     if (!this.i) {
       const firstVector = this.toScreenVector(point, point);
-      this.ctx.moveTo(firstVector.start.x, firstVector.end.y);
+      this.ctx?.moveTo(firstVector.start.x, firstVector.end.y);
     }
   }
 
   clearAll() {
-    if (!this.ctx) return;
-    this.ctx.clearRect(0, 0, this.width, this.height);
+    this.ctx?.clearRect(0, 0, this.width, this.height);
   }
 
   writeToBuffer(point: IPlotPoint) {
@@ -131,12 +156,11 @@ export class PlotterComponent implements OnInit, AfterContentInit{
   }
 
   drawScreenSegment(screenVector: IVector) {
-    if (!this.ctx) return;
-    this.ctx.beginPath();
-    this.ctx.lineTo(screenVector.start.x, screenVector.start.y);
-    this.ctx.lineTo(screenVector.end.x, screenVector.end.y);
-    this.ctx.closePath();
-    this.ctx.stroke();
+    this.ctx?.beginPath();
+    this.ctx?.lineTo(screenVector.start.x, screenVector.start.y);
+    this.ctx?.lineTo(screenVector.end.x, screenVector.end.y);
+    this.ctx?.closePath();
+    this.ctx?.stroke();
   }
 
   drawVector(start: IPlotPoint, end: IPlotPoint) {
@@ -159,8 +183,7 @@ export class PlotterComponent implements OnInit, AfterContentInit{
   }
 
   clearRect() {
-    if (!this.ctx) return;
-    this.ctx.fillRect(0, 0, this.width, this.height);
+    this.ctx?.fillRect(0, 0, this.width, this.height);
   }
 
 

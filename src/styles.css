@@ -40,6 +40,9 @@ h3 {
     }
     &.gap-1{ gap: var(--step-1); }
     &.gap-2{ gap: var(--step-2); }
+    & .grow-1 {
+        flex-grow: 1;
+    }
 }
 .p-1 { padding: var(--step-1); }
 .p-2 { padding: var(--step-2); }

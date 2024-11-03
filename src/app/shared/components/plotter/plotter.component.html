@@ -16,7 +16,11 @@
         (onClick)="clearAll()" 
         label="Clear"
     />
+    <div>{{height}} x {{width}} / {{frameW}}</div>
 </div>
-<div class="container mt-2">
-    <canvas id="canvas" [height]="height" [width]="width"></canvas>
+<div class="container mt-2 grow-1"  #canvasContainer >
+    <div class="container-scroll">
+        <canvas id="canvasElem" #canvas [height]="height" [width]="width"></canvas>
+    </div>
 </div>
+

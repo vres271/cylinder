@@ -1,4 +1,12 @@
 .container {
-    border: 1px solid var(--border-color);
+    /* border: 1px solid var(--border-color); */
     border-radius: var(--step-1);
+    position: relative;
+    & .container-scroll {
+        position: absolute; 
+        overflow: auto;
+        & canvas {
+            border: 1px solid var(--border-color);
+        }
+    }
 }
